@@ -329,7 +329,7 @@ sparkRHive.init <- function(jsc = NULL) {
   }
 
   # Default to without Hive support for backward compatibility.
-  sparkR.session(enableHiveSupport = TRUE)
+  sparkR.session(enableHiveSupport = FALSE)
 }
 
 #' Get the existing SparkSession or initialize a new SparkSession.
@@ -384,7 +384,7 @@ sparkR.session <- function(
   sparkConfig = list(),
   sparkJars = "",
   sparkPackages = "",
-  enableHiveSupport = TRUE,
+  enableHiveSupport = FALSE,
   ...) {
 
   sparkConfigMap <- convertNamedListToEnv(sparkConfig)
