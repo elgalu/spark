@@ -122,32 +122,32 @@ private[orc] object OrcFilters extends Logging {
       // call is mandatory.  ORC `SearchArgument` builder requires that all leaf predicates must be
       // wrapped by a "parent" predicate (`And`, `Or`, or `Not`).
 
-      case EqualTo(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startAnd().equals(attribute, value).end())
+      // case EqualTo(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startAnd().equals(attribute, value).end())
 
-      case EqualNullSafe(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startAnd().nullSafeEquals(attribute, value).end())
+      // case EqualNullSafe(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startAnd().nullSafeEquals(attribute, value).end())
 
-      case LessThan(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startAnd().lessThan(attribute, value).end())
+      // case LessThan(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startAnd().lessThan(attribute, value).end())
 
-      case LessThanOrEqual(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startAnd().lessThanEquals(attribute, value).end())
+      // case LessThanOrEqual(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startAnd().lessThanEquals(attribute, value).end())
 
-      case GreaterThan(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startNot().lessThanEquals(attribute, value).end())
+      // case GreaterThan(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startNot().lessThanEquals(attribute, value).end())
 
-      case GreaterThanOrEqual(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startNot().lessThan(attribute, value).end())
+      // case GreaterThanOrEqual(attribute, value) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startNot().lessThan(attribute, value).end())
 
-      case IsNull(attribute) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startAnd().isNull(attribute).end())
+      // case IsNull(attribute) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startAnd().isNull(attribute).end())
 
-      case IsNotNull(attribute) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startNot().isNull(attribute).end())
+      // case IsNotNull(attribute) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startNot().isNull(attribute).end())
 
-      case In(attribute, values) if isSearchableType(dataTypeMap(attribute)) =>
-        Some(builder.startAnd().in(attribute, values.map(_.asInstanceOf[AnyRef]): _*).end())
+      // case In(attribute, values) if isSearchableType(dataTypeMap(attribute)) =>
+      //   Some(builder.startAnd().in(attribute, values.map(_.asInstanceOf[AnyRef]): _*).end())
 
       case _ => None
     }

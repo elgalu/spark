@@ -32,13 +32,13 @@ You can fix these problems by setting the `MAVEN_OPTS` variable as discussed bef
 **Note:**
 
 * If using `build/mvn` with no `MAVEN_OPTS` set, the script will automatically add the above options to the `MAVEN_OPTS` environment variable.
-* The `test` phase of the Spark build will automatically add these options to `MAVEN_OPTS`, even when not using `build/mvn`.    
+* The `test` phase of the Spark build will automatically add these options to `MAVEN_OPTS`, even when not using `build/mvn`.
 
 ### build/mvn
 
 Spark now comes packaged with a self-contained Maven installation to ease building and deployment of Spark from source located under the `build/` directory. This script will automatically download and setup all necessary build requirements ([Maven](https://maven.apache.org/), [Scala](http://www.scala-lang.org/), and [Zinc](https://github.com/typesafehub/zinc)) locally within the `build/` directory itself. It honors any `mvn` binary if present already, however, will pull down its own copy of Scala and Zinc regardless to ensure proper version requirements are met. `build/mvn` execution acts as a pass through to the `mvn` call allowing easy transition from previous build methods. As an example, one can build a version of Spark as follows:
 
-    ./build/mvn -DskipTests clean package
+    ./build/mvn -DskipTests clean package ;beep;beep
 
 Other build examples can be found below.
 
@@ -49,25 +49,33 @@ To create a Spark distribution like those distributed by the
 to be runnable, use `./dev/make-distribution.sh` in the project root directory. It can be configured
 with Maven profile settings and so on like the direct Maven build. Example:
 
-    ./dev/make-distribution.sh --name custom-spark --pip --r --tgz -Psparkr -Phadoop-2.7 -Phive -Phive-thriftserver -Pmesos -Pyarn -Pkubernetes
+IMPORTANT This Spark by default is built and coupled to Hive 1.2.1.spark2 (from 2016)
+
+
+    ./dev/make-distribution.sh --name datalab-spark --pip --r --tgz -Psparkr -Phadoop-3.1 -Phive -Phive-thriftserver -Pmesos -Pyarn -Pkubernetes ;beep;beep
+
+    ./dev/make-distribution.sh --name datalab-spark --pip --r --tgz -DskipTests -Psparkr -Phadoop-3.1 -Dhadoop.version=3.1.1 -Phive -Phive-thriftserver -Pkubernetes
+
+How to build only 2 components, spark-sql and spark-hive
+
+    ./build/mvn -DskipTests -Psparkr -Phadoop-3.1 -Dhadoop.version=3.1.1 -Phive -Phive-3.1.0 -Phive-thriftserver -Phive-thriftserver-3.1.1 -Pkubernetes -pl :spark-sql_2.11 clean install
+
+    ./build/mvn -DskipTests -Psparkr -Phadoop-3.1 -Dhadoop.version=3.1.1 -Phive -Phive-3.1.0 -Phive-thriftserver -Phive-thriftserver-3.1.1 -Pkubernetes -pl :spark-hive_2.11 clean install
 
 This will build Spark distribution along with Python pip and R packages. For more information on usage, run `./dev/make-distribution.sh --help`
 
 ## Specifying the Hadoop Version and Enabling YARN
 
-You can specify the exact version of Hadoop to compile against through the `hadoop.version` property. 
+You can specify the exact version of Hadoop to compile against through the `hadoop.version` property.
 If unset, Spark will build against Hadoop 2.6.X by default.
 
-You can enable the `yarn` profile and optionally set the `yarn.version` property if it is different 
+You can enable the `yarn` profile and optionally set the `yarn.version` property if it is different
 from `hadoop.version`.
 
 Examples:
 
-    # Apache Hadoop 2.6.X
-    ./build/mvn -Pyarn -DskipTests clean package
-
-    # Apache Hadoop 2.7.X and later
-    ./build/mvn -Pyarn -Phadoop-2.7 -Dhadoop.version=2.7.7 -DskipTests clean package
+    # Apache Hadoop 2.1.X and later
+    ./build/mvn -Pyarn -Phadoop-3.1 -Dhadoop.version=3.1.1 -DskipTests clean package
 
 ## Building With Hive and JDBC Support
 
@@ -94,7 +102,7 @@ like ZooKeeper and Hadoop itself.
 ## Building with Kubernetes support
 
     ./build/mvn -Pkubernetes -DskipTests clean package
-    
+
 ## Building with Kafka 0.8 support
 
 Kafka 0.8 support must be explicitly enabled with the `kafka-0-8` profile.

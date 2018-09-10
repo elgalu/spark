@@ -28,6 +28,8 @@ import scala.annotation.tailrec
 
 import org.apache.spark.unsafe.types.UTF8String
 
+import org.apache.hadoop.hive.common.`type`.{Timestamp => HiveTimestamp, Date => HiveDate}
+
 /**
  * Helper functions for converting between internal and external date and time representations.
  * Dates are exposed externally as java.sql.Date and are represented internally as the number of
@@ -194,6 +196,13 @@ object DateTimeUtils {
   }
 
   /**
+   * Returns the number of days since epoch from org.apache.hadoop.hive.common.type.Date.
+   */
+  def fromHiveDate(date: HiveDate): SQLDate = {
+    millisToDays(date.toEpochMilli)
+  }
+
+  /**
    * Returns a java.sql.Date from number of days since epoch.
    */
   def toJavaDate(daysSinceEpoch: SQLDate): Date = {
@@ -224,6 +233,17 @@ object DateTimeUtils {
   def fromJavaTimestamp(t: Timestamp): SQLTimestamp = {
     if (t != null) {
       t.getTime() * 1000L + (t.getNanos().toLong / 1000) % 1000L
+    } else {
+      0L
+    }
+  }
+
+  /**
+   * Returns the number of micros since epoch from org.apache.hadoop.hive.common.type.Timestamp.
+   */
+  def fromHiveTimestamp(t: HiveTimestamp): SQLTimestamp = {
+    if (t != null) {
+      t.toEpochMilli() * 1000L
     } else {
       0L
     }

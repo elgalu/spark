@@ -168,12 +168,14 @@ private[hive] object HiveShim {
     }
 
     def deserializePlan[UDFType](is: java.io.InputStream, clazz: Class[_]): UDFType = {
-      deserializeObjectByKryo(Utilities.runtimeSerializationKryo.get(), is, clazz)
+      val kryo = new Kryo();
+      deserializeObjectByKryo(kryo, is, clazz)
         .asInstanceOf[UDFType]
     }
 
     def serializePlan(function: AnyRef, out: java.io.OutputStream): Unit = {
-      serializeObjectByKryo(Utilities.runtimeSerializationKryo.get(), function, out)
+      val kryo = new Kryo();
+      serializeObjectByKryo(kryo, function, out)
     }
 
     def writeExternal(out: java.io.ObjectOutput) {

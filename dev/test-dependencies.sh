@@ -32,8 +32,7 @@ export LC_ALL=C
 HADOOP2_MODULE_PROFILES="-Phive-thriftserver -Pmesos -Pkafka-0-8 -Pkubernetes -Pyarn -Pflume -Phive"
 MVN="build/mvn"
 HADOOP_PROFILES=(
-    hadoop-2.6
-    hadoop-2.7
+    hadoop-3.1
 )
 
 # We'll switch the version to a temp. one, publish POMs using that new version, then switch back to

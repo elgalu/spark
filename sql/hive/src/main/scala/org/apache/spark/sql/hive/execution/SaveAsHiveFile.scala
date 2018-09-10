@@ -168,7 +168,8 @@ private[hive] trait SaveAsHiveFile extends DataWritingCommand {
       val fs: FileSystem = dirPath.getFileSystem(hadoopConf)
       dirPath = new Path(fs.makeQualified(dirPath).toString())
 
-      if (!FileUtils.mkdir(fs, dirPath, true, hadoopConf)) {
+      // if (!FileUtils.mkdir(fs, dirPath, true, hadoopConf)) {
+      if (!FileUtils.mkdir(fs, dirPath, hadoopConf)) {
         throw new IllegalStateException("Cannot create staging directory: " + dirPath.toString)
       }
       createdTempDir = Some(dirPath)
@@ -227,20 +228,21 @@ private[hive] trait SaveAsHiveFile extends DataWritingCommand {
     // SPARK-20594: This is a walk-around fix to resolve a Hive bug. Hive requires that the
     // staging directory needs to avoid being deleted when users set hive.exec.stagingdir
     // under the table directory.
-    if (FileUtils.isSubDir(new Path(stagingPathName), inputPath, fs) &&
-      !stagingPathName.stripPrefix(inputPathName).stripPrefix(File.separator).startsWith(".")) {
-      logDebug(s"The staging dir '$stagingPathName' should be a child directory starts " +
-        "with '.' to avoid being deleted if we set hive.exec.stagingdir under the table " +
-        "directory.")
-      stagingPathName = new Path(inputPathName, ".hive-staging").toString
-    }
+    // if (FileUtils.isSubDir(new Path(stagingPathName), inputPath, fs) &&
+    //   !stagingPathName.stripPrefix(inputPathName).stripPrefix(File.separator).startsWith(".")) {
+    //   logDebug(s"The staging dir '$stagingPathName' should be a child directory starts " +
+    //     "with '.' to avoid being deleted if we set hive.exec.stagingdir under the table " +
+    //     "directory.")
+    //   stagingPathName = new Path(inputPathName, ".hive-staging").toString
+    // }
 
     val dir: Path =
       fs.makeQualified(
         new Path(stagingPathName + "_" + executionId + "-" + TaskRunner.getTaskRunnerID))
     logDebug("Created staging dir = " + dir + " for path = " + inputPath)
     try {
-      if (!FileUtils.mkdir(fs, dir, true, hadoopConf)) {
+      // if (!FileUtils.mkdir(fs, dir, true, hadoopConf)) {
+      if (!FileUtils.mkdir(fs, dir, hadoopConf)) {
         throw new IllegalStateException("Cannot create staging directory  '" + dir.toString + "'")
       }
       createdTempDir = Some(dir)

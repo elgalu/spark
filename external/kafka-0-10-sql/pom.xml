@@ -110,7 +110,7 @@
 
   <profiles>
     <profile>
-      <id>scala-2.12</id>
+      <id>scala-2.11</id>
       <properties>
         <kafka.version>0.10.1.1</kafka.version>
       </properties>
