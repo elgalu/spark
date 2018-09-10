@@ -381,7 +381,7 @@ sparkR.session <- function(
   master = "",
   appName = "SparkR",
   sparkHome = Sys.getenv("SPARK_HOME"),
-  sparkConfig = list(),
+  sparkConfig = list(spark.sql.catalogImplementation = "in-memory"),
   sparkJars = "",
   sparkPackages = "",
   enableHiveSupport = FALSE,
